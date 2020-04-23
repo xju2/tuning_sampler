@@ -29,7 +29,8 @@ if __name__ == "__main__":
     print("Total {} samples".format(nsamples))
     for irun in range(nsamples):
         out_dir = os.path.join(submit_dir, "{:06d}".format(irun))
-        os.makedirs(out_dir, exist_ok=True)
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
         pythia_outname = os.path.join(out_dir, pythia_out)
         para_outname = os.path.join(out_dir, para_name)
 

@@ -10,8 +10,8 @@ import pandas as pd
 
 import pyDOE
 
-from mpituning.parameter import Parameter
-from mpituning.utils import find_precision
+from tuning_sampler.parameter import Parameter
+from tuning_sampler.utils import find_precision
 
 
 def least_runs(n):

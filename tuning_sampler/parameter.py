@@ -4,7 +4,7 @@ This module primarily does two things, based on the input information.
 Currently sample the parameter evenly.
 2. prepare a string for pythia or rivet configuration.
 """
-from mpituning.utils import find_precision
+from tuning_sampler.utils import find_precision
 
 class Parameter(object):
     """
