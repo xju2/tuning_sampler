@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+from __future__ import print_function
+
+import os
+import argparse
+from tuning_sampler.sampler import TuneMngr
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="create directorys for Py8-DIY")
+    add_arg = parser.add_argument
+    add_arg("base_pythia_cmd", help='input file containing pythin command lines')
+    add_arg('para_info', help='json file describing generator parameters')
+    add_arg("--submit-dir", default='submit')
+    add_arg("--pythia-cmd-name", default='runPythia.cmd')
+    add_arg('--parameter-filename', default='used_parameters')
+    args = parser.parse_args()
+
+    submit_dir = args.submit_dir
+    para_name = args.parameter_filename
+    pythia_out = args.pythia_cmd_name
+
+    base_pythia = ""
+    with open(args.base_pythia_cmd, 'r') as f:
+        for line in f:
+            base_pythia += line
+
+    samples = TuneMngr(args.para_info)
+    nsamples = samples.generate()
+    print("Total {} samples".format(nsamples))
+    for irun in range(nsamples):
+        out_dir = os.path.join(submit_dir, "{:06d}".format(irun))
+        os.makedirs(out_dir, exist_ok=True)
+        pythia_outname = os.path.join(out_dir, pythia_out)
+        para_outname = os.path.join(out_dir, para_name)
+
+        with open(para_outname, 'w') as f:
+            f.write(samples.get_tune(irun)+"\n")
+
+        with open(pythia_outname, 'w') as f:
+            f.write(base_pythia + samples.get_config(irun)+'\n')
+    print("Done")

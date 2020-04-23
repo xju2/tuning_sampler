@@ -1,0 +1,45 @@
+{
+	"DOE": "factorial",
+	"variables": [
+	{
+		"id_": 0,
+		"name": "MultipartonInteractions:alphaSvalue",
+		"nickname": "MPIalphaS",
+		"description": "alpha_s value for MPI",
+		"min_": 0.10,
+		"nominal": 0.126,
+		"max_": 0.15,
+		"values": 10
+	},
+	{
+		"id_": 1,
+		"name": "MultipartonInteractions:pT0Ref",
+		"nickname": "MPIpT0Ref",
+		"description": "pT reference for MPI",
+		"min_": 1.5,
+		"max_": 3.0,
+		"nominal": 0.215,
+		"values": 10
+	},
+	{
+		"id_": 2,
+		"name": "MultipartonInteractions:ecmPow",
+		"nickname": "MPIecmPow",
+		"description": "power of center-of-mass-energy",
+		"min_": 0.0,
+		"max_": 0.5,
+		"nominal": 0.215,
+		"values": 10
+	},
+	{
+		"id_": 3,
+		"name": "MultipartonInteractions:expPow",
+		"nickname": "MPIexpPow",
+		"description": "exponential power",
+		"min_": 0.4,
+		"max_": 10,
+		"nominal": 1.85,
+		"values": 10
+	}
+	]
+}
