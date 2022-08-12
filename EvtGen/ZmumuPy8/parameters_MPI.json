@@ -1,0 +1,15 @@
+{
+	"DOE": "factorial",
+	"variables": [
+	{
+		"id_": 0,
+		"name": "MultipartonInteractions:alphaSvalue",
+		"nickname": "MPIalphaS",
+		"description": "alpha_s value for MPI",
+		"min_": 0.10,
+		"nominal": 0.126,
+		"max_": 0.15,
+		"values": 10
+	}
+	]
+}

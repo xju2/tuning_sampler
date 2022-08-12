@@ -39,6 +39,9 @@ class Parameter(object):
         self.run_values = []  # actual values used to generate events
         self.type_ = type_
         self.other_opt = kwords
+        print("Parameter {}({},{})".format(self.name, self.min_, self.max_))
+        # print("  {}".format(self.description))
+        print("  {}".format(self.values))
 
     def get_even_values(self, values):
         if values < 2:

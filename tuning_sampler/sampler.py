@@ -2,10 +2,9 @@
 from __future__ import print_function
 
 import json
-import sys
 import os
 
-import math
+import numpy as np
 import pandas as pd
 
 import pyDOE
@@ -76,7 +75,7 @@ class TuneMngr:
                 map(self.append_one2one, self.para_list)
 
             elif doe_option == "factorial":
-                index_array = pyDOE.fullfact([len(para.values) for para in self.para_list])
+                index_array = pyDOE.fullfact(np.array([len(para.values) for para in self.para_list], dtype=np.int32))
                 for ip, para in enumerate(self.para_list):
                     para.run_values = [para.values[int(x)] for x in index_array[:, ip]]
 
