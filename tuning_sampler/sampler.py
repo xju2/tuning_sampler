@@ -3,22 +3,22 @@ from __future__ import print_function
 
 import json
 import os
+from functools import reduce
 
 import numpy as np
 import pandas as pd
 
-import pyDOE
+import pyDOE2 as pyDOE
+
 
 from tuning_sampler.parameter import Parameter
-from tuning_sampler.utils import find_precision
-
 
 def least_runs(n):
     # n is the number of parameters
     # return number of coefficient to be fitted
-    return 1 + n + n*(n+1)/2
+    return 1 + n + n * (n + 1) / 2
 
-class TuneMngr:
+class TuningSampler(object):
     """
     Manage tuned prameters and sampling of these parameters
     """
@@ -47,14 +47,14 @@ class TuneMngr:
         print("\nBegin of parameter summary")
         print("  Design of Exp.:", self.DOE)
         print("  Total parameters: {}".format(len(self.para_list)))
-        for para in sorted(self.para_list, key=lambda para:para.id_):
-            print("\t",para)
+        for para in sorted(self.para_list, key=lambda para: para.id_):
+            print("\t", para)
 
         print("End of parameter summary")
 
-    def append_factors(self, para):
+    def append_factors(self, para, new_list):
         if len(new_list) > 0:
-            para.run_values = para.values*reduce(lambda x, y: x*y, [len(z.values) for z in new_list])
+            para.run_values = para.values * reduce(lambda x, y: x * y, [len(z.values) for z in new_list])
         else:
             para.run_values = para.values
 
@@ -62,8 +62,7 @@ class TuneMngr:
         """use the values provided by the parameter itself.
         The ones with shorter value-list are filled by their nominal values
         """
-        para.run_values = para.values + [para.nominal]*(self.max_len - len(para.values))
-
+        para.run_values = para.values + [para.nominal] * (self.max_len - len(para.values))
 
     def generate(self, out_name='parameters.csv'):
         if os.path.exists(out_name):
@@ -82,9 +81,9 @@ class TuneMngr:
             elif "lhs" in doe_option:
                 nsamples = int(doe_option.split(',')[1])
                 scales = 5
-                frac_array = pyDOE.lhs(len(self.para_list), samples=nsamples) ## CDF values for norm(0, 1)
+                frac_array = pyDOE.lhs(len(self.para_list), samples=nsamples)   # CDF values for norm(0, 1)
                 for ip, para in enumerate(self.para_list):
-                    para.run_values = [round(para.min_+ x*(para.max_ - para.min_), scales) for x in frac_array[:, ip]]
+                    para.run_values = [round(para.min_ + x * (para.max_ - para.min_), scales) for x in frac_array[:, ip]]
             else:
                 print("I do nothing.")
 
@@ -98,7 +97,7 @@ class TuneMngr:
 
 
     def get_config(self, irun):
-        return "\n".join([para.config(self.df[para.nickname].iloc[irun])\
+        return "\n".join([para.config(self.df[para.nickname].iloc[irun])
                           for para in self.para_list if para.type_ == "pythia"])
 
     def get_tune(self, irun):
@@ -111,11 +110,11 @@ class TuneMngr:
             hist2D = detector_hists.get(para.name, None)
             if hist2D is not None:
                 bin_2d = hist2D.binIndexAt(para.other_opt['eta'], para.other_opt['pT'])
-                para.nickname = para.nickname+"_bin"+str(bin_2d)
+                para.nickname = para.nickname + "_bin" + str(bin_2d)
 
     def update_detector(self, irun, detector_hists):
         new_hists = {}
-        for key,value in detector_hists.iteritems():
+        for key, value in detector_hists.iteritems():
             new_hists[key] = value.clone()
 
         for para in self.para_list:
@@ -125,34 +124,35 @@ class TuneMngr:
             hist2D = new_hists.get(para.name, None)
             if hist2D is not None:
                 bin_2d = hist2D.binIndexAt(para.other_opt['eta'], para.other_opt['pT'])
-                #print("INFO: ",hist2D.bin(bin_2d).volume, hist2D.bin(bin_2d).height)
-                #print("BIN Index: ", bin_2d)
-                hist2D.fillBin(bin_2d, -1*hist2D.bin(bin_2d).volume)
+                # print("INFO: ",hist2D.bin(bin_2d).volume, hist2D.bin(bin_2d).height)
+                # print("BIN Index: ", bin_2d)
+                hist2D.fillBin(bin_2d, -1 * hist2D.bin(bin_2d).volume)
                 hist2D.fillBin(bin_2d, self.df[para.nickname].iloc[irun])
                 # print "After: ",hist2D.bin(bin_2d).volume, hist2D.bin(bin_2d).height
                 # para.nickname = para.nickname+"_bin"+str(bin_2d)
                 # print "bin index: ", hist2D.binIndexAt(para.other_opt['eta'], para.other_opt['pT'])
                 # print "set to: ", self.df[para.nickname].iloc[irun]
             else:
-                print(para.name,"is not in detector configuration")
+                print(para.name, "is not in detector configuration")
 
         return new_hists
 
 if __name__ == "__main__":
+    import sys
     if len(sys.argv) < 2:
-        print(sys.argv[0]," json")
+        print(sys.argv[0], " json")
         exit(1)
 
-    print( least_runs(1))
-    print( least_runs(5))
-    print( least_runs(6))
-    print( least_runs(10))
-    print( least_runs(100))
-    print( least_runs(500))
-    print( least_runs(1000))
+    print(least_runs(1))
+    print(least_runs(5))
+    print(least_runs(6))
+    print(least_runs(10))
+    print(least_runs(100))
+    print(least_runs(500))
+    print(least_runs(1000))
 
-    #sys.exit(0)
-    tune = TuneMngr(sys.argv[1])
+    # sys.exit(0)
+    tune = TuningSampler(sys.argv[1])
 
     tune.generate()
     irun = 0
