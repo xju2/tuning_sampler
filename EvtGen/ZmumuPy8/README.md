@@ -20,6 +20,7 @@ docker run -it --rm -v $PWD:$PWD -w $PWD hepstore/rivet-pythia bash
 ```bash
 pythia8-main93 -c runPythia.cmnd -n 10000 -o combined
 ```
+
 The `runPythia.cmnd` looks like the following:
 ```text
 Beams:idA = 2212                   ! first beam, p = 2212, pbar = -2212
@@ -47,6 +48,7 @@ Main:runRivet = on
 Main:analyses = ATLAS_2019_I1736531
 MultipartonInteractions:alphaSvalue      = 0.1          ! alpha_s value for MPI
 ```
+
 <!-- then generate the events:
 ```bash
 mpirun -n 6 pythia8-diy -i submit -n 30000 -a ATLAS_2019_I1736531 --evts-per-block 5000 -o combined.yoda

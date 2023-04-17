@@ -1,4 +1,5 @@
 EvtGen
 
+*.pyc
 build
 *egg-info*
