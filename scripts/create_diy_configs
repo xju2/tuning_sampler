@@ -35,8 +35,8 @@ if __name__ == "__main__":
         para_outname = os.path.join(out_dir, para_name)
 
         with open(para_outname, 'w') as f:
-            f.write(samples.get_tune(irun)+"\n")
+            f.write(samples.get_tune(irun) + "\n")
 
         with open(pythia_outname, 'w') as f:
-            f.write(base_pythia + samples.get_config(irun)+'\n')
+            f.write(base_pythia + samples.get_config(irun) + '\n')
     print("Done")

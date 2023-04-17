@@ -20,7 +20,7 @@ setup(
     install_requires=[
         'pandas',
         'numpy',
-        'pyDOE',
+        'pyDOE2',
     ],
     setup_requires=[],
     classifiers=[

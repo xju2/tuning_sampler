@@ -83,7 +83,7 @@ class TuningSampler(object):
                 scales = 5
                 frac_array = pyDOE.lhs(len(self.para_list), samples=nsamples)   # CDF values for norm(0, 1)
                 for ip, para in enumerate(self.para_list):
-                    para.run_values = [round(para.min_ + x * (para.max_ - para.min_), scales) for x in frac_array[:, ip]]
+                    para.run_values = [round(para.min_val + x * (para.max_val - para.min_val), scales) for x in frac_array[:, ip]]
             else:
                 print("I do nothing.")
 

@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-Some utilities 
+Some utilities
 """
 
 import math
@@ -19,15 +19,14 @@ def find_precision(number):
         frac_digits /= 10
 
     scale = int(math.log10(frac_digits))
-    return (magnitude+scale, scale)
+    return (magnitude + scale, scale)
 
 
 def str_to_int(events):
     evt_type = type(events)
     if evt_type is int:
         return events
-    elif evt_type is not unicode and\
-            evt_type is not str:
+    elif evt_type is not unicode and evt_type is not str:
         return -1
     else:
         events = events.lower()
@@ -60,4 +59,4 @@ def nersc_hours(queue_name, hours, nnodes, njobs):
     else:
         print("I don't know which queue you are in")
 
-    return charge_factor*hours*nnodes*njobs
+    return charge_factor * hours * nnodes * njobs

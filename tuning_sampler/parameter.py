@@ -78,9 +78,11 @@ class Parameter(object):
         return hash((self.nickname))
 
     def prof_config(self, value):
+        """return a string for configuring the Professor"""
         return "{} {}".format(self.nickname, value)
 
     def config(self, value):
+        """return a string for configuring the Pythia8"""
         return "{:<40} = {:<10} \t! {}".format(self.name, value, self.description)
 
 
