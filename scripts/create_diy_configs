@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import os
 import argparse
-from tuning_sampler.sampler import TuneMngr
+from tuning_sampler.sampler import TuningSampler
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="create directorys for Py8-DIY")
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         for line in f:
             base_pythia += line
 
-    samples = TuneMngr(args.para_info)
+    samples = TuningSampler(args.para_info)
     nsamples = samples.generate()
     print("Total {} samples".format(nsamples))
     for irun in range(nsamples):
